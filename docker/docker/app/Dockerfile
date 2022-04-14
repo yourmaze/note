@@ -50,6 +50,9 @@ RUN composer global require phpunit/phpunit ^9.0 --no-progress --no-scripts --no
 RUN pecl install xdebug
 RUN docker-php-ext-enable xdebug
 
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+RUN apt-get install -y nodejs
+
 # User
 ARG UID
 ARG GID
