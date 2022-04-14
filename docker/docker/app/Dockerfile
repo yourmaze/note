@@ -1,9 +1,7 @@
-FROM nginx/unit:1.26.1-php8.1
+FROM php:8.1-fpm
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
-    ntp \
-    whois \
     build-essential \
     locales \
     zip \
@@ -26,12 +24,16 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     iputils-ping \
     libwebp-dev \
-    libmagickwand-dev
+    imagemagick \
+    libmagickwand-dev \
+    libgraphicsmagick1-dev \
+    libsasl2-dev \
+    libicu-dev
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install extensions
+# Install extensions 
 RUN docker-php-ext-install bcmath pdo_mysql mbstring zip exif pcntl opcache pdo_pgsql pgsql soap bz2 calendar iconv intl mysqli
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp
 RUN docker-php-ext-install gd
@@ -47,10 +49,12 @@ RUN composer global require phpunit/phpunit ^9.0 --no-progress --no-scripts --no
 # Dev
 RUN pecl install xdebug
 RUN docker-php-ext-enable xdebug
-RUN composer require --dev squizlabs/php_codesniffer
-RUN composer require --dev phpstan/phpstan
 
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
-RUN apt-get install -y nodejs
+# User
+ARG UID
+ARG GID
 
-CMD ["unitd","--no-daemon"]
+RUN usermod -u ${UID} www-data
+RUN groupmod -g ${GID} www-data
+
+USER www-data
