@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  nginx:
+    build:
+      context: 'unit'
+    container_name: note-unit
+    ports:
+      - '80:80'
+    volumes:
+      - '../:/var/www'
+      - './unit/conf.json:/var/lib/unit/conf.json'
+      - './unit/logs/unit.log:/var/log/unit.log'
+      - './unit/certs:/var/lib/unit/certs/'
+      - './conf/php-ini-overrides.ini:/usr/local/etc/php/conf.d/40-custom.ini'
+    environment:
+      XDEBUG_MODE: debug
+      XDEBUG_CONFIG: client_host=host.docker.internal idekey=PHPSTORM start_with_request=yes
+      PHP_IDE_CONFIG: serverName=Docker
+    working_dir: /var/www
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    links:
+      - pg
+  pg:
+    image: 'postgres:14'
+    container_name: note-pg
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - './database/pg:/var/lib/postgresql/data'
+      - './temp:/temp'
+  redis:
+    image: redis
+    container_name: note-redis
+    ports:
+      - '6379:6379'
+    volumes:
+      - './database/redis:/data'

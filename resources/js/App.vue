@@ -1,64 +1,60 @@
 <template>
-    <div id="app">
-        <div class="heading">
-            <h1>Cruds</h1>
+  <div class="app">
+    <div class="sidebar">
+      <div class="sidebar__top">
+        <img class="sidebar__img"
+             src="/img/logo.png" alt="">
+      </div>
+      <div class="sidebar__wrap">
+        <div class="sidebar__group">
+          <div class="sidebar__menu">
+            <router-link class="sidebar__item"
+                         v-for="(val,key) in menu"
+                         :key="key"
+                         :to="{ name: val.link }">
+              <div class="sidebar__icon">
+                <em :class="val.icon"/>
+              </div>
+              <div class="sidebar__text">
+                {{ val.title }}
+              </div>
+            </router-link>
+          </div>
         </div>
-        <note-component
-            v-for="note in notes"
-            v-bind="note"
-            :key="note.id"
-            @update="update"
-            @delete="del"
-        ></note-component>
-        <div>
-            <button @click="create">Add</button>
-        </div>
+      </div>
+      <div class="sidebar__bottom">
+        Bottom
+      </div>
     </div>
+    <div class="content">
+      <router-view/>
+    </div>
+  </div>
 </template>
 
 <script>
-import NoteComponent from "./components/Note/NoteComponent";
+import { ref } from 'vue'
 
-function Note({ id, color, name}) {
-    this.id = id;
-    this.category_id = color;
-    this.name = name;
-}
 export default {
-    data() {
-        return {
-            notes: []
-        }
-    },
-    methods: {
-        async create() {
-            // To do
-        },
-        async read() {
-            const data = window.axios.get('/api/notes').then( response => {
-                //if (this.firstLoad) this.firstLoad = false;
-                console.log(response.data)
-                const notes = response.data;
-                notes.forEach(note => this.notes.push(new Note(note)));
-            });
-            //console.log(data);
-        },
-        async update(id, color) {
-            // To do
-        },
-        async del(id) {
-            // To do
-        }
-    },
-    components: {
-        NoteComponent
-    },
-    created() {
-        this.read();
+  name: 'App',
+
+  setup () {
+    const isCollapse = ref(false)
+
+    return { isCollapse }
+  },
+
+  data () {
+    return {
+      menu: [
+        { title: 'Главная', link: 'home', icon: 'mdi mdi-home' },
+        { title: 'Настройки', link: 'setting', icon: 'mdi mdi-cog' },
+        { title: 'Категории', link: 'category', icon: 'mdi mdi-shape' },
+        { title: 'Теги', link: 'tag', icon: 'mdi mdi-tag' },
+        { title: 'Ссылки', link: 'link', icon: 'mdi mdi-link' },
+        { title: 'Пользователи', link: 'user', icon: 'mdi mdi-account-multiple' },
+      ],
     }
+  },
 }
 </script>
-
-<style scoped>
-
-</style>
