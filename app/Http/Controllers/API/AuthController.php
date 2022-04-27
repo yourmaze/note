@@ -3,31 +3,42 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\DeleteRequest;
+use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\Auth\TokenRequest;
 use App\Models\User;
+use App\Services\UserService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+    private UserService $userService;
+
+    public function __construct(UserService $userService) {
+        $this->userService = $userService;
+    }
+
+    public function register(RegisterRequest $request): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string'],
-            'device_name' => ['required', 'string']
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 401);
-        }
-
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $user = User::create($input);
-
-        $token = $user->createToken($request->device_name)->plainTextToken;
-
+        $token = $this->userService->createUserAndToken($request->all());
         return response()->json(['token' => $token], 200);
     }
+
+    public function token(TokenRequest $request): JsonResponse
+    {
+        $token = $this->userService->authAnCreateToken($request->all());
+        if (!$token) {
+            return response()->json(['error' => 'The provided credentials are incorrect.'], 401);
+        }
+        return response()->json(['token' => $token]);
+    }
+
+    public function delete(DeleteRequest $request): JsonResponse
+    {
+        $response = $this->userService->deleteUserAndTokens($request->id);
+        return response()->json(['response' => $response], 200);
+    }
+
 }

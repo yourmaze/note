@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Exception;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -14,15 +15,18 @@ class UserFactory extends Factory
      * Define the model's default state.
      *
      * @return array<string, mixed>
+     * @throws Exception
      */
     public function definition()
     {
         return [
+            'id' => $this->faker->uuid(),
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
-            'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
+            'role' => random_int(1, 3) === 1 ? 'user' : 'new',
+            'confirm' => !random_int(1, 3),
+            'confirm_key' => $this->faker->uuid(),
         ];
     }
 

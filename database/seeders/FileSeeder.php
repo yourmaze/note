@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Note;
-use App\Models\Category;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class CategorySeeder extends Seeder
+class FileSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,8 +14,6 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        for($i = 0; $i < 50; $i++) {
-            Category::factory()->create();
-        }
+        //
     }
 }

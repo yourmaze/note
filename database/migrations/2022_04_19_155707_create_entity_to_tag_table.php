@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->unique();
-            $table->string('icon');
-            $table->boolean('active')->default(true);
+        Schema::create('entity_to_tag', function (Blueprint $table) {
+            $table->uuid('entity_id');
+            $table->uuid('tag_id');
         });
     }
 
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('entity_to_tag');
     }
 };

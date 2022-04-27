@@ -13,17 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('notes', function (Blueprint $table) {
-            $table->id();
-            $table->text('title')->nullable();
+        Schema::create('entities', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('title')->nullable();
             $table->text('desc')->nullable();
+            $table->tinyInteger('type')->default(1);
             $table->string('url')->nullable();
             $table->string('img')->nullable();
-            $table->text('content');
-            $table->foreignId('category_id')->constrained('categories');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('category_id')->nullable()->constrained('categories');
+            $table->text('body_text')->nullable();
+            $table->text('body')->nullable();
+            $table->foreignUuid('user_id')->constrained('users');
             $table->boolean('private')->default(true);
-            $table->timestamps();
+            $table->boolean('active')->default(true);
         });
     }
 
@@ -34,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('notes');
+        Schema::dropIfExists('entities');
     }
 };
