@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('entity_to_tag', function (Blueprint $table) {
-            $table->uuid('entity_id');
+            $table->foreignUuid('entity_id')->constrained('entities')->onDelete('cascade');
             $table->uuid('tag_id');
         });
     }

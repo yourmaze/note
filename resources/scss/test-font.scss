@@ -1,6 +1,5 @@
-@import "reset";
-@import "~@mdi/font/scss/materialdesignicons";
 @import "fonts/fonts";
+@import "~@mdi/font/scss/materialdesignicons";
 .mdi::before, .mdi-set{
     font-size: 24px;
 }
@@ -8,7 +7,4 @@
 html, body {
   font-family: $font;
 }
-
-@import "uikit";
-@import "style";
 

@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 //TODO: Add methods get all and get one by id
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 abstract class BaseRepository
 {
     private Model $model;
+    private const COUNT_PER_PAGE = 23;
 
     public function __construct(Model $model)
     {
@@ -18,6 +20,21 @@ abstract class BaseRepository
     public function getOne(mixed $id)
     {
         return $this->model::find($id);
+    }
+
+    public function findAll(array $filter = [], ?int $limit, ?int $offset = null)
+    {
+        $query = $this->buildQuery($filter);
+        if($limit == null) {
+            $limit = self::COUNT_PER_PAGE;
+        }
+        $query->limit($limit);
+
+        if($limit !== null && $offset !== null) {
+            $query->offset($offset);
+        }
+
+        return $query->get()->toArray();
     }
 
     public function create(array $data)
@@ -32,6 +49,16 @@ abstract class BaseRepository
 
     public function delete(mixed $id)
     {
-        return $this->model::find($id)->delete();
+        return $this->model::findOrFail($id)->delete();
+    }
+
+    protected function buildQuery(array $filter): Builder
+    {
+        $model = $this->model;
+        $query = $model::query();
+        /*foreach ($filter as $filterItem) {
+            $query = $filterItem->addToQuery($query);
+        }*/
+        return $query;
     }
 }

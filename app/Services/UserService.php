@@ -28,8 +28,7 @@ class UserService
 
     public function createUserAndToken(array $requestData): string
     {
-        //TODO: Сделать ДТО через spatie
-        $userDto = (array)(new UserData())->fromRequest($requestData);
+        $userDto = (array)new UserData($requestData);
         $user = $this->userRepository->create($userDto);
         return $this->createToken($user, $requestData['device_name']);
     }

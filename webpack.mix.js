@@ -10,7 +10,9 @@ const mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
+//mix.sass('resources/scss/test-font.scss', 'public/css');
 
 mix.js('resources/js/app.js', 'public/js')
     .vue()
-    .sass('resources/scss/app.scss', 'public/css');
+    .sass('resources/scss/app.scss', 'public/css')
+    .version();

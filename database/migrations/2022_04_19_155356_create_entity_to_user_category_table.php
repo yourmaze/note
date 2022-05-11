@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('entity_to_user_category', function (Blueprint $table) {
             $table->uuid('user_category_id');
-            $table->uuid('entity_id');
+            $table->foreignUuid('entity_id')->constrained('entities')->onDelete('cascade');
         });
     }
 

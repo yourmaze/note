@@ -28,5 +28,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::resource('/notes', \App\Http\Controllers\API\EntityController::class, [
-    'except' => ['edit', 'show', 'store']
+    'except' => ['edit', 'show', 'store', 'destroy']
 ]);
+
+Route::delete('notes/delete', [\App\Http\Controllers\API\EntityController::class, 'destroy']);

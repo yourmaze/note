@@ -1,0 +1,100 @@
+// 1. Your custom variables and variable overwrites.
+$primary-color: #533D87;
+$global-color: #191919;
+
+$base-body-background: #fafafa;
+$iconnav-item-color: #191919;
+$iconnav-item-hover-color: #533D87;
+$iconnav-margin-horizontal: 20px;
+$global-border: #D9D9D9 !default;
+$global-font-size: 14px;
+$global-medium-gutter: 20px;
+$grey-color: #777777;
+$global-emphasis-color: $global-color;
+
+$form-padding-horizontal: 13px;
+$form-radio-size: 24px;
+$form-radio-size: 24px;
+$form-radio-background: #F2F2F2;
+$form-radio-checked-background: $primary-color;
+$form-radio-checked-focus-background: $primary-color;
+
+$notification-message-background: #fff;
+$notification-message-color: $global-color;
+$notification-message-font-size: $global-font-size;
+$notification-message-primary-color: $global-color;
+
+$button-primary-background: $primary-color;
+$button-primary-color: #fff;
+$button-small-padding-horizontal: 25px;
+$button-small-font-size: 1rem;
+$button-small-line-height: 39px;
+$button-primary-hover-background: #372859;
+$button-disabled-background: #E6E6E6;
+$button-disabled-color: $grey-color;
+
+$dropdown-nav-item-color: $global-color;
+$dropdown-min-width: 140px;
+$dropdown-nav-header-color: $grey-color;
+
+$modal-title-font-size: 1.4rem;
+$modal-body-padding-vertical: 25px;
+$modal-body-padding-horizontal: 25px;
+
+$base-hr-border: #E6E6E6;
+
+$width-small-width: 180px;
+
+
+// 2. Import default variables and available mixins.
+@import "../../node_modules/uikit/src/scss/variables-theme";
+@import "../../node_modules/uikit/src/scss/mixins-theme";
+
+// 3. Your custom mixin overwrites.
+@mixin hook-iconnav-item(){
+    line-height: 1;
+}
+
+@mixin hook-form-single-line() {
+    border-radius: 10px;
+    background-color: #F2F2F2;
+    border-color: transparent;
+}
+@mixin hook-form-focus{
+    border-color: #B2B2B2;
+}
+
+@mixin hook-notification-message() {
+    padding: 12px 15px;
+    border-radius: 50px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+@mixin hook-notification() {
+    width: auto;
+}
+
+@mixin hook-button() {
+    font-weight: 500;
+    border-radius: 40px;
+    transition: 0.2s all;
+}
+@mixin hook-dropdown() {
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+}
+
+@mixin hook-dropdown-nav-header{
+    padding: 11px 20px 8px 10px;
+    text-transform: none;
+}
+@mixin hook-modal-title{
+    font-weight: 600;
+}
+@mixin hook-form-radio{
+    border-radius: 4px;
+}
+
+// 4. Import UIkit.
+@import "../../node_modules/uikit/src/scss/uikit-theme";
+
